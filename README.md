@@ -74,3 +74,18 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+0. install rust
+1. clone
+    git clone https://github.com/shadowsocks/shadowsocks-android.git sa2
+
+2. submodule
+    git submodule update --init --recursive
+
+3. rsut
+    cd core/src/main/rust/shadowsocks-rust
+    rustup target add armv7-linux-androideabi aarch64-linux-android i686-linux-android x86_64-linux-android
+
+4. 项目配置ndk 和jdk
+5. build
+6. 必须使用kotlin-dsl不然编译的只能是x86
