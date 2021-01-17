@@ -1,1 +1,1 @@
-include(":core", ":plugin", ":mobile", ":tv")
+include(":appt1", ":core")

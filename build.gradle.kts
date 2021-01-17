@@ -6,6 +6,7 @@ plugins {
 
 buildscript {
     apply(from = "repositories.gradle.kts")
+    val kotlin_version by extra("1.3.72")
 
     repositories {
         google()
@@ -34,9 +35,4 @@ tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
 }
 
-// skip uploading the mapping to Crashlytics
-subprojects {
-    tasks.whenTaskAdded {
-        if (name.contains("uploadCrashlyticsMappingFile")) enabled = false
-    }
-}
+

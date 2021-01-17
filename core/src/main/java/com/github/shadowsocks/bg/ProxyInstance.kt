@@ -24,8 +24,6 @@ import android.content.Context
 import com.github.shadowsocks.acl.Acl
 import com.github.shadowsocks.acl.AclSyncer
 import com.github.shadowsocks.database.Profile
-import com.github.shadowsocks.plugin.PluginConfiguration
-import com.github.shadowsocks.plugin.PluginManager
 import com.github.shadowsocks.preference.DataStore
 import com.github.shadowsocks.utils.parseNumericAddress
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +40,6 @@ import java.net.UnknownHostException
 class ProxyInstance(val profile: Profile, private val route: String = profile.route) {
     private var configFile: File? = null
     var trafficMonitor: TrafficMonitor? = null
-    val plugin by lazy { PluginManager.init(PluginConfiguration(profile.plugin ?: "")) }
 
     suspend fun init(service: BaseService.Interface) {
         // it's hard to resolve DNS on a specific interface so we'll do it here
@@ -74,12 +71,7 @@ class ProxyInstance(val profile: Profile, private val route: String = profile.ro
 
         this.configFile = configFile
         val config = profile.toJson()
-        plugin?.let { (path, opts, isV2) ->
-            if (service.isVpnService) {
-                if (isV2) opts["__android_vpn"] = "" else config.put("plugin_args", JSONArray(arrayOf("-V")))
-            }
-            config.put("plugin", path).put("plugin_opts", opts.toString())
-        }
+
         config.put("local_address", DataStore.listenAddress)
         config.put("local_port", DataStore.portProxy)
         config.put("udp_max_associations", 256);

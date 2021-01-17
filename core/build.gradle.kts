@@ -66,7 +66,7 @@ dependencies {
     val roomVersion = "2.2.5"
     val workVersion = "2.4.0"
 
-    api(project(":plugin"))
+//    api(project(":plugin"))
     api("androidx.appcompat:appcompat:1.2.0")
     api("androidx.core:core-ktx:1.5.0-alpha05")
 

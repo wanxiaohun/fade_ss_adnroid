@@ -1,8 +1,5 @@
 
-import com.android.build.VariantOutput
-import com.android.build.gradle.AbstractAppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
@@ -70,39 +67,6 @@ fun Project.setupCore() {
     dependencies.add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:1.0.9")
 }
 
-private val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" to 4)
-fun Project.setupApp() {
+fun Project.setupApp(){
     setupCore()
-
-    android.apply {
-        defaultConfig.resConfigs(listOf("ar", "es", "fa", "fr", "ja", "ko", "ru", "tr", "zh-rCN", "zh-rTW"))
-        buildTypes {
-            getByName("debug") {
-                isPseudoLocalesEnabled = true
-            }
-            getByName("release") {
-                isShrinkResources = true
-                isMinifyEnabled = true
-                proguardFile(getDefaultProguardFile("proguard-android.txt"))
-            }
-        }
-        lintOptions.disable("RemoveWorkManagerInitializer")
-        packagingOptions {
-            exclude("**/*.kotlin_*")
-        }
-        splits.abi {
-            isEnable = true
-            isUniversalApk = true
-        }
-    }
-
-    dependencies.add("implementation", project(":core"))
-
-    if (currentFlavor == "release") (android as AbstractAppExtension).applicationVariants.all {
-        for (output in outputs) {
-            abiCodes[(output as ApkVariantOutputImpl).getFilter(VariantOutput.ABI)]?.let { offset ->
-                output.versionCodeOverride = versionCode + offset
-            }
-        }
-    }
 }

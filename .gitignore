@@ -7,6 +7,7 @@ captures/
 release/
 
 .idea/
+.github
 *.iml
 
 # release apks
